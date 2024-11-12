@@ -9,7 +9,7 @@ set(SOURCES
 )
 
 # Library
-add_library(vdemgmt STATIC ${SOURCES})
+add_library(vdemgmt SHARED ${SOURCES})
 
 # Profiling and coverage options
 if(ENABLE_PROFILE)
@@ -27,3 +27,6 @@ set_target_properties(vdemgmt PROPERTIES
 # Install pkgconfig file
 configure_file(vdemgmt.pc.in ${CMAKE_CURRENT_BINARY_DIR}/vdemgmt.pc @ONLY)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/vdemgmt.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+
+# Install the library
+install(TARGETS vdemgmt LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})

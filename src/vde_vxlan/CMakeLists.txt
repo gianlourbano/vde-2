@@ -21,3 +21,5 @@ if(ENABLE_PROFILE)
     target_compile_options(vde_vxlan PRIVATE -pg --coverage)
     target_link_options(vde_vxlan PRIVATE -pg --coverage)
 endif()
+
+install(TARGETS vde_vxlan DESTINATION ${CMAKE_INSTALL_BINDIR})

@@ -51,3 +51,5 @@ if(ENABLE_EXPERIMENTAL)
 	target_compile_options(vde_switch PRIVATE ${EXP_CFLAGS})
 	target_compile_definitions(vde_switch PRIVATE -DDEBUGOPT -DPORTCOUNTERS -DVDEPLUGIN -DPLUGINS_DIR="${CMAKE_INSTALL_PREFIX}/lib/plugins")
 endif()
+
+install(TARGETS vde_switch DESTINATION ${CMAKE_INSTALL_BINDIR})

@@ -21,3 +21,6 @@ if(ENABLE_PCAP)
 else()
   set(EXTRA_DIST pdump.c)
 endif()
+
+# install modules
+install(TARGETS dump iplog pdump DESTINATION ${CMAKE_INSTALL_LIBDIR}/modules)

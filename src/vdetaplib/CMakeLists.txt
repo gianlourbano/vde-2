@@ -20,5 +20,6 @@ target_compile_options(libvdetap PRIVATE -fno-strict-aliasing)
 add_executable(vdetap vdetap.c)
 target_link_libraries(vdetap vdecommon vdeplug)
 
-# Add extra source files to the distribution
-set(EXTRA_DIST test.c)
+# Install the library
+install(TARGETS libvdetap ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/packages)
+install(TARGETS vdetap RUNTIME DESTINATION ${CMAKE_INSTALL_FULL_LIBEXECDIR})

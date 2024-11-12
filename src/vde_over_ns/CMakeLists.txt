@@ -28,3 +28,6 @@ if(ENABLE_PROFILE)
 	target_compile_options(vde_over_ns PRIVATE -pg --coverage)
 	target_link_libraries(vde_over_ns PRIVATE -pg --coverage)
 endif()
+
+# Install the executable
+install(TARGETS vde_over_ns DESTINATION ${CMAKE_INSTALL_BINDIR})

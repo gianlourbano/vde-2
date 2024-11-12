@@ -42,10 +42,13 @@ add_executable(vde_plug2tap vde_plug2tap.c)
 target_link_libraries(vde_plug2tap vdeplug)
 
 add_executable(vde_autolink vde_autolink.c)
-target_link_libraries(vde_autolink vdemgmt)
+target_link_libraries(vde_autolink vdecommon vdemgmt)
 
 add_executable(wirefilter wirefilter.c)
 target_link_libraries(wirefilter vdeplug m)
 
 add_executable(vdeterm vdeterm.c)
 target_link_libraries(vdeterm vdeplug vdehist)
+
+install(TARGETS vde_plug dpipe unixcmd vde_plug2tap vde_autolink wirefilter vdeterm
+        DESTINATION ${CMAKE_INSTALL_BINDIR})

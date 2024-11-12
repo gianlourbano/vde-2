@@ -97,6 +97,7 @@ if(HAVE_POLL)
         message(STATUS "poll present but broken, emulating with select")
         set(EMULATE_DARWIN_POLL TRUE)
         cm_define_var(poll "vde_poll")
+        set(HAVE_POLL NO)
     endif()
 endif()   
 

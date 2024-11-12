@@ -45,3 +45,6 @@ if(ENABLE_PROFILE)
 	target_compile_options(vde_router PRIVATE -pg --coverage)
 	target_link_options(vde_router PRIVATE -pg --coverage)
 endif()
+
+# Install the executable
+install(TARGETS vde_router DESTINATION ${CMAKE_INSTALL_BINDIR})

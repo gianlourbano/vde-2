@@ -27,3 +27,6 @@ if(ENABLE_PROFILE)
   target_compile_options(vde_cryptcab PRIVATE -pg --coverage)
   target_link_libraries(vde_cryptcab PRIVATE -pg --coverage)
 endif()
+
+# Install the executable
+install(TARGETS vde_cryptcab DESTINATION ${CMAKE_INSTALL_BINDIR})
