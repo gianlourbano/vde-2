@@ -15,7 +15,7 @@ add_executable(vde_cryptcab ${SOURCES})
 # Link libraries
 target_link_libraries(vde_cryptcab
   vdecommon
-  wolfssl
+  ${SSL_LIB}
   vdeplug
 )
 

@@ -28,18 +28,21 @@ option(ENABLE_PCAP "Enable pcap support" ON)
 option(ENABLE_TUNTAP "Enable tuntap support" ON)
 option(ENABLE_EXPERIMENTAL "Enable experimental features" OFF)
 option(ENABLE_PROFILE "Enable profiling options" OFF)
+option(WITH_CRYPT "Choose implementation for cryptcab (wolfssl or mbedtls)" "wolfssl")
+set(crypt ${WITH_CRYPT})
 
 # Set compiler flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 
 # Check for required libraries
 find_library(DL_LIBRARY dl)
-find_library(WOLFSSL_LIBRARY wolfssl)
+find_library(HAVE_WOLFSSL wolfssl)
 find_library(PTHREAD_LIBRARY pthread)
 find_library(PCAP_LIBRARY pcap)
-find_library(VDEPLUG4_LIBRARY vdeplug)
+find_library(HAVE_MBEDTLS mbedtls)
 
 # Check for headers
+
 cm_check_include(arpa/inet.h HAVE_ARPA_INET_H)
 cm_check_include(fcntl.h HAVE_FCNTL_H)
 cm_check_include(netdb.h HAVE_NETDB_H)
@@ -65,13 +68,12 @@ cm_check_include(sys/signal.h HAVE_SYS_SIGNAL_H)
 cm_check_include(sys/stropts.h HAVE_SYS_STROPTS_H)
 cm_check_include(sys/type32.h HAVE_SYS_TYPE32_H)
 
-
-
 cm_check_include(syslimits.h HAVE_SYSLIMITS_H)
 cm_check_include(sys/syslimits.h HAVE_SYS_SYSLIMITS_H)
 cm_check_include(sysexits.h HAVE_SYSEXITS_H)
 
 cm_check_include(wolfssl/wolfcrypt/chacha.h HAVE_WOLFSSL_CHACHA_H)
+cm_check_include(mbedtls/chacha20.h HAVE_MBEDTLS_CHACHA20_H)
 
 # Check for functions
 cm_check_function(atexit HAVE_ATEXIT)
@@ -142,12 +144,36 @@ else()
     message(FATAL_ERROR "Unsupported OS: ${CMAKE_SYSTEM_NAME}")
 endif()
 
-# Configure features based on options and available libraries
-if(HAVE_WOLFSSL_CHACHA_H)
-    set(ENABLE_CRYPTCAB ON)
+if(${crypt} STREQUAL "wolfssl")
+  if(HAVE_WOLFSSL AND HAVE_WOLFSSL_CHACHA_H)
+    set(CAN_MAKE_CRYPTCAB ON)
+  else()
+    set(CAN_MAKE_CRYPTCAB OFF)
+  endif()
+  add_definitions(-DUSE_WOLFSSL=1)
+  set(SSL_LIB "wolfssl")
+  cm_define_var(HAVE_WOLFSSL 1)
+elseif(${crypt} STREQUAL "mbedtls")
+  if(HAVE_MBEDTLS AND HAVE_MBEDTLS_CHACHA20_H)
+    set(CAN_MAKE_CRYPTCAB ON)
+  else()
+    set(CAN_MAKE_CRYPTCAB OFF)
+  endif()
+  add_definitions(-DUSE_WOLFSSL=0)
+  cm_define_var(HAVE_MBEDTLS 1)
+  set(SSL_LIB "mbedcrypto")
 else()
+  message(FATAL_ERROR "Unsupported crypt option: ${crypt}. At the moment, only wolfssl and mbedlts are supported. Contributions are appreciated! :-)")
+endif()
+
+# Configure features based on options and available libraries
+if(CAN_MAKE_CRYPTCAB AND NOT ENABLE_CRYPTCAB)
     set(ENABLE_CRYPTCAB OFF)
-    message(WARNING "Cannot enable VDE CryptCab: wc_chacha_process not found")
+elseif(CAN_MAKE_CRYPTCAB AND ENABLE_CRYPTCAB)
+    set(ENABLE_CRYPTCAB ON)
+elseif(NOT CAN_MAKE_CRYPTCAB AND ENABLE_CRYPTCAB)
+    message(WARNING "Cannot make vde_cryptcab: required library (${SSL_LIB}) not found")
+    set(ENABLE_CRYPTCAB OFF)
 endif()
 
 if(ENABLE_ROUTER AND PTHREAD_LIBRARY)
@@ -228,9 +254,6 @@ endif()
 if(ENABLE_PROFILE)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pg")
 endif()
-
-# Configure header file
-#configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/config.h)
 
 # Add subdirectories
 add_subdirectory(src)

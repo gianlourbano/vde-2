@@ -72,5 +72,5 @@ set(default_conf_file "config.h.template")
 macro(cm_configure_file to_file)
     file(WRITE ${default_conf_file} ${defines})
     configure_file(${default_conf_file} ${to_file})
-    #file(REMOVE ${default_conf_file})
+    file(REMOVE ${default_conf_file}) # uncomment if you want to check the template
 endmacro()
