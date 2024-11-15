@@ -28,7 +28,7 @@ option(ENABLE_PCAP "Enable pcap support" ON)
 option(ENABLE_TUNTAP "Enable tuntap support" ON)
 option(ENABLE_EXPERIMENTAL "Enable experimental features" OFF)
 option(ENABLE_PROFILE "Enable profiling options" OFF)
-option(WITH_CRYPT "Choose implementation for cryptcab (wolfssl or mbedtls)" "wolfssl")
+set(WITH_CRYPT "wolfssl" CACHE STRING "Choose implementation for cryptcab (wolfssl or mbedtls)")
 set(crypt ${WITH_CRYPT})
 
 # Set compiler flags
