@@ -230,6 +230,7 @@ if(ENABLE_TUNTAP)
             endif()
         else()
             message(WARNING "You do not have TunTap support. You can get it here: http://tuntaposx.sourceforge.net/")
+	    set(ENABLE_TUNTAP OFF)
         endif()
 
     elseif(CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
