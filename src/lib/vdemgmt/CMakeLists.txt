@@ -21,8 +21,10 @@ endif()
 set_target_properties(vdemgmt PROPERTIES
   VERSION 0.0.1
   SOVERSION 0
-  LINK_FLAGS "-export-dynamic"
 )
+
+target_link_libraries(vdemgmt PRIVATE vdecmmon)
+
 
 # Install pkgconfig file
 configure_file(vdemgmt.pc.in ${CMAKE_CURRENT_BINARY_DIR}/vdemgmt.pc @ONLY)
