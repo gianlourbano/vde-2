@@ -23,7 +23,7 @@ set_target_properties(vdemgmt PROPERTIES
   SOVERSION 0
 )
 
-target_link_libraries(vdemgmt PRIVATE vdecmmon)
+target_link_libraries(vdemgmt PRIVATE vdecommon)
 
 
 # Install pkgconfig file
