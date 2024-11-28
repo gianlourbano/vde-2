@@ -15,6 +15,10 @@ add_library(vdesnmp SHARED libvdesnmp.c)
 add_library(vdeplug SHARED libvdeplug.c)
 add_library(vdehist SHARED libvdehist.c)
 
+# Add compile options
+target_compile_options(vdehist PRIVATE -Wall -O2 -g -O2 -fno-common -DPIC)
+target_link_options(vdehist PRIVATE -Wl,-undefined -Wl,dynamic_lookup -Wl,-no_fixup_chains -Wl,-force_load -O2 -g -O2)
+
 # Link libraries
 target_link_libraries(vdesnmp PRIVATE vdecommon vdemgmt)
 target_link_libraries(vdeplug PRIVATE vdecommon)

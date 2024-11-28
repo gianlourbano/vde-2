@@ -48,7 +48,7 @@ add_executable(wirefilter wirefilter.c)
 target_link_libraries(wirefilter vdeplug m vdecommon)
 
 add_executable(vdeterm vdeterm.c)
-target_link_libraries(vdeterm vdeplug vdehist vdecomon)
+target_link_libraries(vdeterm vdeplug vdehist vdecommon)
 
 install(TARGETS vde_plug dpipe unixcmd vde_plug2tap vde_autolink wirefilter vdeterm
         DESTINATION ${CMAKE_INSTALL_BINDIR})
